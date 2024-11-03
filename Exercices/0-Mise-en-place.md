@@ -56,7 +56,16 @@ Lancez votre apllication puis utiliser votre navigateur pour accéder à la page
 
 ---
 
-## 1.5. Mise en place de Github
+## 1.5. Mise en place de la base de données
+### 1.5.1. Configuration de labse de données:
+Changez la variable `DATABASE_URL` dans le fichier `.env` pour vous connectez à votre base de données.
+
+### 1.5.2. Créer la base de données:
+Utiliser la commande de Symfony Maker Bundle pour créer la base de données.
+
+---
+
+## 1.6. Mise en place de Github
 Rendez-vous sur le [site de Github](https://github.com/):
 - Créer un nouveau Projet Guthub.
 - Créez un nouveau Repository.

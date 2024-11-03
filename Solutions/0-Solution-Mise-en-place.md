@@ -118,7 +118,21 @@ symfony server:start
 ```
 Puis utiliser votre navigateur pour accéder à la page d'accueil de votre application sur [http://localhost:8000](http://localhost:8000)
 
-## 1.5. Mise en place de Github
+---
+
+## 1.5. Mise en place de la base de données
+### 1.5.1. Configuration de labse de données:
+Changez la variable `DATABASE_URL` dans le fichier `.env` pour vous connectez à votre base de données.
+
+### 1.5.2. Créer la base de données:
+Utiliser la commande de Symfony Maker Bundle pour créer la base de données.
+```bash
+symfony console doctrine:database:create
+```
+
+---
+
+## 1.6. Mise en place de Github
 Rendez-vous sur le [site de Github](https://github.com/):
 - Créer un nouveau Projet Guthub.
 - Créez un nouveau Repository.
