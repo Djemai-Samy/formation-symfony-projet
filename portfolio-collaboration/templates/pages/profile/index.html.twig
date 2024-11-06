@@ -1,0 +1,40 @@
+{% extends 'pages/layout.html.twig' %}
+
+{% block title %}Portfolio Collaboration
+{% endblock %}
+
+{% block body %}
+	<div>
+		<h1 class="text-3xl text-center m-8 hidden">Bienvenue sur vote profile!</h1>
+
+		{% include "components/utilisateur/infos-utilisateurs.html.twig" %}
+
+		<section>
+			<h2 class="text-3xl text-center m-8 font-extrabold">
+				Collections de
+				{{utilisateur.pseudo}}
+			</h2>
+			<ul class="flex flex-wrap max-w-3xl justify-center py-4">
+				<div class="w-full shadow-md flex flex-col gap-2 max-w-[300px]">
+					<div class="bg-secondary h-[200px] w-full flex justify-center items-center">
+						<svg width="150" height="150" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="m-auto">
+							<path d="M18 22H4a2 2 0 0 1-2-2V6"/>
+							<path d="m22 13-1.296-1.296a2.41 2.41 0 0 0-3.408 0L11 18"/>
+							<circle cx="12" cy="8" r="2"/>
+							<rect width="16" height="16" x="6" y="2" rx="2"/>
+						</svg>
+					</div>
+					<div class="bg-neutral-50 p-4 space-y-4">
+						<p>Créez une nouvelle collection.</p>
+						<a href="" class="w-full bg-primary rounded flex gap-2 p-2">
+							{% include "components/icons/ajouter.icon.twig" %}
+							<span class='text-secondary'>Nouvelle collection</span>
+						</a>
+					</div>
+
+				</div>
+			</ul>
+
+		</section>
+	</div>
+{% endblock %}

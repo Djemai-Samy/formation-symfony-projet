@@ -1,0 +1,56 @@
+{% set links = [
+    {
+        'name': 'app_accueil_page',
+        'label': 'Accueil',
+        'icon': 'home_icon.svg'
+    },
+    
+] %}
+
+{% if app.user %}
+	{% set authLinks = [
+        {
+            'name': 'app_profile_page',
+            'label': 'Profile',
+            'icon': 'profile_icon.svg'
+        },
+        {
+            'name':'app_deconnexion',
+            'label': 'Se déconnecter',
+            'icon': 'deconnexion_icon.svg'
+        },
+
+    ] %}
+{% else %}
+	{% set authLinks = [
+        {
+            'name': 'app_authentification_page',
+            'label': 'Authentification',
+            'icon': 'authentification_icon.svg'
+        }
+    ] %}
+{% endif %}
+
+{% set allLinks = links|merge(authLinks) %}
+
+<nav class="navbar">
+	<div id="navbar-menu-button">
+		<svg width="32" height="32" viewbox="0 0 24 24" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="">
+			<line x1="4" x2="20" y1="12" y2="12"/>
+			<line x1="4" x2="20" y1="6" y2="6"/>
+			<line x1="4" x2="20" y1="18" y2="18"/>
+		</svg>
+	</div>
+
+	<ul id="navbar-menu" style="left:-100%">
+
+		{% for link in allLinks %}
+			<li>
+				<a href="{{ path(link.name) }}" class="text-lg hover:text-indigo-700 flex gap-1 items-center">
+					<img src={{asset("icons/" ~ link.icon)}} alt="" class="h-5 w-5">
+					{{ link.label }}
+				</a>
+			</li>
+		{% endfor %}
+	</ul>
+</nav>

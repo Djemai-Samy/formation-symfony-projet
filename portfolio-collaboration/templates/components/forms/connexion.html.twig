@@ -1,0 +1,44 @@
+{% set connexionData = app.request.query.all('connexion') %}
+{% set dernierEmail =  connexionData.dernierEmail is defined ? connexionData.dernierEmail : ""  %}
+
+<section class="flex flex-col w-screen max-w-[500px] bg-neutral-100 p-8 m-auto my-4 rounded drop-shadow-md">
+	<h2 class="text-primary text-3xl font-bold text-center border-b-2 py-2 mb-8">Connexion</h2>
+
+	{{ form_start(connexionForm, { 
+        'method': 'POST',
+        'action': path('app_connexion'),
+        "attr":{"class":'flex flex-col gap-4'}
+        }) }}
+
+	{# Champ pour le mail #}
+	{{ form_label(connexionForm.email) }}
+	{{ form_widget(connexionForm.email, {full_name:'email', value: dernierEmail, attr: {class: 'p-2 rounded'} }) }}
+	<div class="text-red-400 text-md">
+		{{ form_errors(connexionForm.email) }}
+	</div>
+
+	{# Password field #}
+	{{ form_label(connexionForm.password) }}
+	{{ form_widget(connexionForm.password, {full_name:'password', attr: {class: 'p-2 rounded w-full'} }) }}
+	<div class="text-red-600 text-md">
+		{{ form_errors(connexionForm.password) }}
+	</div>
+
+
+	{# Display general password errors #}
+	<div class="text-red-600 text-md">
+		{{ form_errors(connexionForm.password) }}
+	</div>
+
+	{{ form_widget(connexionForm.submit, 
+         { attr: {class: 'bg-primary p-2 text-secondary rounded hover:bg-primary/75 transition'} }) }}
+
+
+	{% if connexionData %}
+		{% if connexionData.error is defined %}
+			<p class="text-red-600">
+				Une erreur est survenue. Veuillez réessayer.
+			</p>
+		{% endif %}
+	{% endif %}
+	{{ form_end(connexionForm) }}</section>

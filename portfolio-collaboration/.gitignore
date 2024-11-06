@@ -13,3 +13,9 @@
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+
+###< Migrations ###
+/migrations/*
+
+/src/Entity/Collection.php
+/src/Repository/CollectionRepository.php

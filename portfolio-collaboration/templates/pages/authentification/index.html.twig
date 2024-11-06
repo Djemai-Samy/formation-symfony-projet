@@ -1,0 +1,16 @@
+{% extends 'pages/layout.html.twig' %}
+
+{% block body %}
+	<div>
+		<h1 class="text-3xl text-center m-8">Portfolio Collaboration</h1>
+		{% include "components/forms/connexion.html.twig" %}
+
+		<div class="flex items-center gap-4 max-w-96 m-auto">
+			<span class="h-[1px] bg-primary/50 w-full"></span>
+			<span class="">OU</span>
+			<span class="h-[1px] bg-primary/50 w-full"></span>
+		</div>
+		
+		{% include "components/forms/inscription.html.twig" %}
+	</div>
+{% endblock %}

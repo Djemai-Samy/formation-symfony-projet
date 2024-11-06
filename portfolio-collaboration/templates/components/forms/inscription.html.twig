@@ -1,0 +1,91 @@
+<section class="flex flex-col w-screen max-w-[500px] bg-neutral-100 p-8 m-auto my-4 rounded drop-shadow-md">
+	<h2 class="text-primary text-3xl font-bold text-center border-b-2 py-2 mb-8">Inscription</h2>
+
+	{{ form_start(inscriptionForm, { 
+        'method': 'POST',
+        "attr":{"class":'flex flex-col gap-4'}
+        }) }}
+
+	{# Champ pour le mail #}
+	{{ form_label(inscriptionForm.email) }}
+	{{ form_widget(inscriptionForm.email, { attr: {class: 'p-2 rounded'} }) }}
+	<div class="text-red-400 text-md">
+		{{ form_errors(inscriptionForm.email) }}
+	</div>
+
+	{# Champ pour le pseudo #}
+	{{ form_label(inscriptionForm.pseudo) }}
+	{{ form_widget(inscriptionForm.pseudo, { attr: {class: 'p-2 rounded w-full'} }) }}
+	<div class="text-red-400 text-md">
+		{{ form_errors(inscriptionForm.pseudo) }}
+	</div>
+
+	{# Password field #}
+	{{ form_label(inscriptionForm.password.first) }}
+	{{ form_widget(inscriptionForm.password.first, { attr: {class: 'p-2 rounded w-full'} }) }}
+	<div class="text-red-600 text-md">
+		{{ form_errors(inscriptionForm.password.first) }}
+	</div>
+
+	{# Confirm Password field #}
+	{{ form_label(inscriptionForm.password.second) }}
+	{{ form_widget(inscriptionForm.password.second, { attr: {class: 'p-2 rounded w-full'} }) }}
+	<div class="text-red-600 text-md">
+		{{ form_errors(inscriptionForm.password.second) }}
+	</div>
+
+	{# Display general password errors #}
+	<div class="text-red-600 text-md">
+		{{ form_errors(inscriptionForm.password) }}
+	</div>
+
+	{# Conditions field #}
+	{{ form_label(inscriptionForm.conditions, null, {'label_attr': {'class': 'hidden'}})}}
+	<div class="flex gap-4 items-center align-middle">
+		{{ form_widget(inscriptionForm.conditions, { attr: {class: 'rounded h-4 w-4 '} }) }}
+		{{ form_help(inscriptionForm.conditions) }}
+	</div>
+	<div class="text-red-600 text-md">
+		{{ form_errors(inscriptionForm.conditions) }}
+	</div>
+
+	{{ form_widget(inscriptionForm.submit, 
+         { attr: {class: 'bg-primary p-2 text-secondary rounded hover:bg-primary/75 transition'} }) }}
+
+
+	{% set inscriptionData = app.request.query.all('inscription') %}
+	{% if inscriptionData %}
+		{% if inscriptionData.status == "success" %}
+			<p>
+				<span class="text-green-600">
+					Inscription réussie,
+				</span>
+				<a class="text-sky-600 underline" href="">Connectez-vous!</a>
+			</p>
+		{% endif %}
+		{% if inscriptionData.status == "error" %}
+			<p class="text-red-600">
+				Une erreur est survenue. Veuillez réessayer.
+			</p>
+		{% endif %}
+	{% endif %}
+
+
+	{# {% for data in app.flashes('inscription') %}
+														{% if data["status"] == "success" %}
+															<p>
+																<span class="text-green-600">
+																	Inscription réussie,
+																</span>
+																<a class="text-sky-600 underline" href="">Connectez-vous!</a>
+															</p>
+														{% else %}
+															<p class="text-red-600">
+																Une erreur est survenue. Veuillez réessayer.
+															</p>
+														{% endif %}
+													{% endfor %} #}
+
+
+	{{ form_end(inscriptionForm) }}
+</section>

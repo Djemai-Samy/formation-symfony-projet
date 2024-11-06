@@ -1,0 +1,107 @@
+{% extends 'pages/layout.html.twig' %}
+
+{% block title %}Portfolio Collaboration
+{% endblock %}
+
+{% block body %}
+	<div>
+		<h1 class="text-3xl text-center m-8">Bienvenue sur vote profile!</h1>
+
+		{{ form_start(profileForm, { 
+        			'method': 'POST',
+        			"attr":{"class":'bg-secondary p-8 flex max-w-5xl m-auto flex-wrap'}
+        			}) 
+				}}
+		{# Champ pour l'avatar #}
+		<div class="w-full md:w-1/2">
+			{% if utilisateur.avatar %}
+				<img src={{asset('images/avatars/' ~ utilisateur.avatar)}} alt="">
+			{% else %}
+				<img src={{asset('images/avatars/default_avatar.svg')}} alt="" class=" w-full max-w-[300px] m-auto">
+
+			{% endif %}
+
+			{{ form_label(profileForm.avatar, null, {label_attr:{class:'text-lg font-bold underline'}}) }}
+			{{ form_widget(profileForm.avatar, { attr: {class: 'p-2 rounded w-full'} }) }}
+			<div class="text-red-400 text-md">
+				{{ form_errors(profileForm.avatar) }}
+			</div>
+
+		</div>
+		{# Champ pour les informations personnel #}
+		<div class="w-full md:w-1/2 space-y-4 relative shadow-md p-4 bg-background stroke-primary/60">
+			<a class="absolute top-4 right-4 hover:scale-110 transition-all cursor-pointer border border-primary p-1 rounded-sm">
+				<svg class="w-5 h-5" viewbox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil-ruler">
+					<path d="M13 7 8.7 2.7a2.41 2.41 0 0 0-3.4 0L2.7 5.3a2.41 2.41 0 0 0 0 3.4L7 13"/>
+					<path d="m8 6 2-2"/>
+					<path d="m18 16 2-2"/>
+					<path d="m17 11 4.3 4.3c.94.94.94 2.46 0 3.4l-2.6 2.6c-.94.94-2.46.94-3.4 0L11 17"/>
+					<path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/>
+					<path d="m15 5 4 4"/>
+				</svg>
+			</a>
+			<h2 class="text-2xl font-extrabold">Informations personnelles</h2>
+
+			{# Champ pour le pseudo #}
+			<div class="">
+				{{ form_label(profileForm.pseudo, null, {label_attr:{class:'text-lg font-bold underline'}}) }}
+				{{ form_widget(profileForm.pseudo, { attr: {class: 'p-2 rounded w-full'} }) }}
+				<div class="text-red-400 text-md">
+					{{ form_errors(profileForm.pseudo) }}
+				</div>
+
+			</div>
+
+			{# Champ pour la emploi #}
+			<div class="">
+				{{ form_label(profileForm.emploi, null, {label_attr:{class:'text-lg font-bold underline'}}) }}
+				{{ form_widget(profileForm.emploi, { attr: {class: 'p-2 rounded w-full', list:'emplois'} }) }}
+				<datalist id="emplois">
+					<option value="Photographe"></option>
+					<option value="Graphiste"></option>
+					<option value="Scénariste"></option>
+					<option value="Réalisateur"></option>
+					<option value="Développeur"></option>
+					<option value="Peintre"></option>
+				</datalist>
+				<div class="text-red-400 text-md">
+					{{ form_errors(profileForm.emploi) }}
+				</div>
+
+				{# Champ pour le pseudo #}
+				<div class="">
+					{{ form_label(profileForm.telephone, null, {label_attr:{class:'text-lg font-bold underline'}}) }}
+					{{ form_widget(profileForm.telephone, { attr: {class: 'p-2 rounded w-full'} }) }}
+					<div class="text-red-400 text-md">
+						{{ form_errors(profileForm.telephone) }}
+					</div>
+
+				</div>
+				{# Champ pour le pseudo #}
+				<div class="">
+					{{ form_label(profileForm.siteURL, null, {label_attr:{class:'text-lg font-bold underline'}}) }}
+					{{ form_widget(profileForm.siteURL, { attr: {class: 'p-2 rounded w-full'} }) }}
+					<div class="text-red-400 text-md">
+						{{ form_errors(profileForm.siteURL) }}
+					</div>
+
+				</div>
+				{# Champ pour la description #}
+				<div class="">
+					{{ form_label(profileForm.description, null, {label_attr:{class:'text-lg font-bold underline'}}) }}
+					{{ form_widget(profileForm.description, { attr: {class: 'p-2 rounded w-full'} }) }}
+					<div class="text-red-400 text-md">
+						{{ form_errors(profileForm.description) }}
+					</div>
+
+
+				</div>
+
+
+			</div>
+			{{ form_widget(profileForm.submit, 
+         { attr: {class: 'bg-primary p-2 text-secondary rounded hover:bg-primary/75 transition'} }) }}
+		</div>
+		{{ form_end(profileForm) }}
+	</div>
+{% endblock %}
