@@ -7,6 +7,7 @@ use App\Form\ConnexionType;
 use App\Form\InscriptionType;
 use App\Form\ProfileType;
 use App\Repository\UtilisateurRepository;
+use App\Service\Uploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -41,8 +42,7 @@ class ProfileController extends AbstractController
     function modifierProfile(
         UtilisateurRepository $utilisateurRepository,
         Request $request,
-        SluggerInterface $slugger,
-        #[Autowire('%kernel.project_dir%/public/images/avatars')] string $brochuresDirectory
+        Uploader $uploader
     ) {
         if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('app_authentification_page');
@@ -55,7 +55,6 @@ class ProfileController extends AbstractController
             return $this->redirectToRoute('app_authentification_page');
         }
 
-        // Créer le formulaire d'inscription et le lier avec l'objet
         $profileForm = $this->createForm(ProfileType::class, $utilisateurDB);
 
         $profileForm->handleRequest($request);
@@ -63,21 +62,8 @@ class ProfileController extends AbstractController
 
             $avatarFichier = $profileForm->get('avatar')->getData();
             if ($avatarFichier) {
-                $originalFilename = pathinfo($avatarFichier->getClientOriginalName(), PATHINFO_FILENAME);
-                // Créer un nom sécurisé et unique pour le fichier en utilisant le nom original
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $avatarFichier->guessExtension();
-
-                // Déplacer le ficher vers le dossier avatars
-                try {
-                    $avatarFichier->move($brochuresDirectory, $newFilename);
-                } catch (FileException $e) {
-                    // ... Gérer le cas ou un problème est survenue
-                }
-
-                // updates the 'brochureFilename' property to store the PDF file name
-                // instead of its contents
-                $utilisateurDB->setAvatar($newFilename);
+                $newAvatar = $uploader->upload($avatarFichier, "avatars");
+                $utilisateurDB->setAvatar($newAvatar);
             }
 
             $utilisateurRepository->sauvegarder($utilisateurDB);
