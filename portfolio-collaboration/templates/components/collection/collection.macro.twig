@@ -1,0 +1,7 @@
+{% macro tags(tagsList) %}
+	<ul class="flex gap-2 py-4">
+		{% for tag in tagsList %}
+			<li class="bg-primary rounded-full text-secondary text-sm p-1 px-4">{{tag}}</li>
+		{% endfor %}
+	</ul>
+{% endmacro %}

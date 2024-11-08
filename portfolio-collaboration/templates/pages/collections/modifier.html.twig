@@ -1,0 +1,73 @@
+{% extends 'pages/layout.html.twig' %}
+
+{% block title %}Portfolio Collaboration - Modifier une collection
+{% endblock %}
+
+{% block body %}
+	<div>
+		<h1 class="text-3xl text-center m-8">
+			Modifier la collection
+			{{collection.titre}}
+		</h1>
+
+		{{ form_start(
+			form, 
+			{ 
+        		"attr":{"class":'bg-secondary p-8 flex max-w-5xl m-auto flex-col gap-2'}
+        	}) 
+		}}
+
+		{# Champ pour la couverture #}
+		{{ form_label(form.cover, null, {label_attr:{class:'text-lg font-bold underline'}}) }}
+		{{ form_widget(form.cover, { attr: {class: 'p-2 rounded w-full'} }) }}
+		<div class="text-red-400 text-md">
+			{{ form_errors(form.cover) }}
+		</div>
+
+		{# Champ pour le titre #}
+		{{ form_label(form.titre, null, {label_attr:{class:'text-lg font-bold underline'}}) }}
+		{{ form_widget(form.titre, { attr: {class: 'p-2 rounded w-full'} }) }}
+		<div class="text-red-400 text-md">
+			{{ form_errors(form.titre) }}
+		</div>
+
+		{# Champ pour la description #}
+		{{ form_label(form.description, null, {label_attr:{class:'text-lg font-bold underline'}}) }}
+		{{ form_widget(form.description, { attr: {class: 'p-2 rounded w-full'} }) }}
+		<div class="text-red-400 text-md">
+			{{ form_errors(form.description) }}
+		</div>
+
+		{# Champ pour la categorie #}
+		{{ form_label(form.categorie, null, {label_attr:{class:'text-lg font-bold underline'}}) }}
+		{{ form_widget(form.categorie, { attr: {class: 'p-2 rounded w-full'} }) }}
+		<div class="text-red-400 text-md">
+			{{ form_errors(form.categorie) }}
+		</div>
+
+		{# Champ pour les tags #}
+		{{ form_label(form.tags, null, {label_attr:{class:'text-lg font-bold underline'}}) }}
+		{{ form_widget(form.tags, { attr: {class: 'p-2 rounded w-full'} }) }}
+		<div class="text-red-400 text-md">
+			{{ form_errors(form.tags) }}
+		</div>
+
+		{# Champ pour isPublic#}
+		<div class="flex w-full p-2 gap-2 my-2">
+			{{ form_label(form.isPublic, null, {label_attr:{class:'text-lg font-bold underline hidden'}}) }}
+			{{ form_widget(form.isPublic, { attr: {class: 'p-2 rounded'} }) }}
+			<p>Public</p>
+			<div class="text-red-400 text-md">
+				{{ form_errors(form.isPublic) }}
+			</div>
+		</div>
+
+		<div class="flex w-full justify-center gap-4">
+			<a href={{path('app_collection_page', {id: collection.id} )}} class="bg-red-500 p-2 text-secondary rounded hover:bg-primary/75 transition">
+				Annuler
+			</a>
+			<button class="bg-primary p-2 text-secondary rounded hover:bg-primary/75 transition">Mettre à jour la collection</button>
+		</div>
+		{{ form_end(form) }}
+	</div>
+{% endblock %}

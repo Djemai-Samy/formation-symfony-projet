@@ -16,6 +16,3 @@
 
 ###< Migrations ###
 /migrations/*
-
-/src/Entity/Collection.php
-/src/Repository/CollectionRepository.php
