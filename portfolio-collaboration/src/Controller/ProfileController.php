@@ -2,54 +2,49 @@
 
 namespace App\Controller;
 
-use App\Entity\Utilisateur;
-use App\Form\ConnexionType;
-use App\Form\InscriptionType;
 use App\Form\ProfileType;
+use App\Repository\CollectionRepository;
 use App\Repository\UtilisateurRepository;
 use App\Service\Uploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ProfileController extends AbstractController
 {
+    public function __construct(private UtilisateurRepository $utilisateurRepository, private Uploader $uploader) {}
 
     #[Route('/profile', name: 'app_profile_page')]
-    function afficherProfile(UtilisateurRepository $utilisateurRepository)
+    function afficherProfile(Request $req,  CollectionRepository $collectionRepo,)
     {
         if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('app_authentification_page');
         }
 
         $sessionUtilisateur = $this->getUser();
-        $utilisateurDB = $utilisateurRepository->findOneBy(['email' => $sessionUtilisateur->getUserIdentifier()]);
+        $utilisateurDB = $this->utilisateurRepository->findOneBy(['email' => $sessionUtilisateur->getUserIdentifier()]);
 
         if (!$utilisateurDB) {
             return $this->redirectToRoute('app_authentification_page');
         }
 
-        return $this->render('pages/profile/index.html.twig', ['utilisateur' => $utilisateurDB]);
+        $query = $req->query->has("query") ? $req->query->get("query") : "";
+        $page = $req->query->has("page") ? $req->query->get("page") : 0;
+        $collections = $collectionRepo->search($page, false, $query, $utilisateurDB->getId());
+
+        return $this->render('pages/profile/index.html.twig', ['utilisateur' => $utilisateurDB, "collections" => $collections]);
     }
 
     #[Route('/profile/modification', name: 'app_modification_profile_page')]
     function modifierProfile(
-        UtilisateurRepository $utilisateurRepository,
         Request $request,
-        Uploader $uploader
     ) {
         if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('app_authentification_page');
         }
 
         $sessionUtilisateur = $this->getUser();
-        $utilisateurDB = $utilisateurRepository->findOneBy(['email' => $sessionUtilisateur->getUserIdentifier()]);
+        $utilisateurDB = $this->utilisateurRepository->findOneBy(['email' => $sessionUtilisateur->getUserIdentifier()]);
 
         if (!$utilisateurDB) {
             return $this->redirectToRoute('app_authentification_page');
@@ -62,14 +57,29 @@ class ProfileController extends AbstractController
 
             $avatarFichier = $profileForm->get('avatar')->getData();
             if ($avatarFichier) {
-                $newAvatar = $uploader->upload($avatarFichier, "avatars");
+                $newAvatar = $this->uploader->upload($avatarFichier, "avatars");
                 $utilisateurDB->setAvatar($newAvatar);
             }
 
-            $utilisateurRepository->sauvegarder($utilisateurDB);
+            $this->utilisateurRepository->sauvegarder($utilisateurDB);
             return $this->redirectToRoute('app_profile_page');
         }
 
         return $this->render('pages/profile/modification.html.twig', ['utilisateur' => $utilisateurDB, 'profileForm' => $profileForm]);
+    }
+
+    #[Route('/user/{id}', name: 'app_user_page')]
+    function profileUser($id, Request $req,  CollectionRepository $collectionRepo,)
+    {
+        $utilisateurDB = $this->utilisateurRepository->find($id);
+
+        if (!$utilisateurDB) {
+            return $this->redirectToRoute('app_accueil_page');
+        }
+        $query = $req->query->has("query") ? $req->query->get("query") : "";
+        $page = $req->query->has("page") ? $req->query->get("page") : 0;
+        $collections = $collectionRepo->search($page, false, $query, $utilisateurDB->getId());
+
+        return $this->render('pages/profile/index.html.twig', ['utilisateur' => $utilisateurDB, 'collections' => $collections]);
     }
 }
