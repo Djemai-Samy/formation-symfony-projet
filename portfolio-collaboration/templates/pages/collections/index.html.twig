@@ -1,0 +1,42 @@
+{% extends 'pages/layout.html.twig' %}
+{% import "components/collection/collection.macro.twig" as collectionMacros %}
+
+{% block title %}Portfolio Collaboration
+{% endblock %}
+
+{% block body %}
+	<div>
+		<h1 class="text-3xl">Découvrez toutes les collection</h1>
+
+		<div>
+			<form class="flex gap-4 p-4">
+				<input type="text" name="query" class="p-3 rounded w-full border" placeholder="Entrez une recherche"/>
+				<button class="bg-primary text-primary-foreground p-2 rounded" type="submit">
+					Recherche
+				</button>
+			</form>
+		</div>
+		<ul class="flex flex-wrap max-w-9xl justify-center py-4 gap-4">
+			{% for collection in collections %}
+				{% if collection.isPublic or collection.utilisateur.id == app.user.id %}
+					{{collectionMacros.card(collection)}}
+				{% endif %}
+			{% endfor %}
+		</ul>
+
+		<div class="flex justify-between max-w-3xl relative p-4 my-8 mx-auto">
+			{% set pageNumber = app.request.query.get('page') %}
+			{% if pageNumber != 0  %}
+				<a href={{ path('app_collections_page',{page:pageNumber - 1} ) }} class='flex gap-4 bg-primary p-2 rounded text-primary-foreground absolute left-10'>
+					{% include 'components/icons/precedent.icon.twig' %}
+					<span>Page précédente</span>
+				</a>
+			{% endif %}
+			<a href={{ path('app_collections_page',{page:pageNumber + 1} ) }} class='flex gap-4 bg-primary p-2 rounded text-primary-foreground absolute right-10'>
+				<span>Page suivante</span>
+				{% include 'components/icons/suivant.icon.twig' %}
+
+			</a>
+		</div>
+	</div>
+{% endblock %}

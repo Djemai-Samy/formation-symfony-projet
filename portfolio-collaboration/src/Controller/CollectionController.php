@@ -106,7 +106,6 @@ class CollectionController extends AbstractController
         return $this->render('pages/collections/modifier.html.twig', ['form' => $form, "collection" => $collection]);
     }
 
-
     #[Route(path: '/collection/{id}/supprimer', name: 'app_supprimer_collection')]
     function supprimerCollection($id)
     {
@@ -123,5 +122,14 @@ class CollectionController extends AbstractController
         $this->collectionRepo->supprimer($collection);
 
         return $this->redirectToRoute("app_profile_page");
+    }
+
+    #[Route(path: '/collections', name: 'app_collections_page')]
+    public function collectionsPage(Request $req): Response
+    {
+        $query = $req->query->has("query") ? $req->query->get("query") : "";
+        $page = $req->query->has("page") ? $req->query->get("page") : 0;
+        $collection = $this->collectionRepo->search($page, true, $query);
+        return $this->render('pages/collections/index.html.twig', ['collections' => $collection]);
     }
 }

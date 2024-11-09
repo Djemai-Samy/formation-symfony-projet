@@ -1,0 +1,7 @@
+{% macro avatar(utilisateur) %}
+	{% if utilisateur.avatar %}
+		<img src={{asset('images/avatars/' ~ utilisateur.avatar)}} alt="" class=" w-full m-auto max-h-[400px] object-cover">
+	{% else %}
+		<img src={{asset('images/avatars/default_avatar.svg')}} alt="" class=" w-full max-w-[300px] m-auto">
+	{% endif %}
+{% endmacro %}

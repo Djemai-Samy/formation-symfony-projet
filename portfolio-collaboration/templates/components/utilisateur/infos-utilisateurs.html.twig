@@ -1,3 +1,4 @@
+{% set isProprietaire = app.user.id == utilisateur.id %}
 <section class="bg-secondary p-8 flex max-w-5xl m-auto flex-wrap">
 	<div class="w-full md:w-1/2 flex justify-center items-center">
 		{% if utilisateur.avatar %}
@@ -7,10 +8,12 @@
 		{% endif %}
 	</div>
 	<div class="w-full md:w-1/2 space-y-4 relative shadow-md p-4 bg-background stroke-primary/60">
+		{% if isProprietaire %}
 
-		<a href={{path("app_modification_profile_page")}} class="absolute top-4 right-4 hover:scale-110 transition-all cursor-pointer border border-primary p-1 rounded-sm">
-			{% include "components/icons/edition.icon.twig" %}
-		</a>
+			<a href={{path("app_modification_profile_page")}} class="absolute top-4 right-4 hover:scale-110 transition-all cursor-pointer border border-primary p-1 rounded-sm">
+				{% include "components/icons/edition.icon.twig" %}
+			</a>
+		{% endif %}
 
 		<h2 class="text-2xl font-extrabold">{{utilisateur.pseudo}}</h2>
 		<div class="flex">

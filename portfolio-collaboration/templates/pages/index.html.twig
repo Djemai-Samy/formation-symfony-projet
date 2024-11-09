@@ -1,10 +1,24 @@
 {% extends 'pages/layout.html.twig' %}
+{% import "components/collection/collection.macro.twig" as collectionMacros %}
 
 {% block title %}Portfolio Collaboration
 {% endblock %}
 
 {% block body %}
-	<div>
+	<div class="flex flex-col justify-center">
 		<h1 class="text-3xl">Bienvenue sur Portfolio Collaboration! ✅</h1>
+
+		<ul class="flex flex-wrap max-w-9xl justify-center py-4 gap-4">
+			{% for collection in collections %}
+				{% if collection.isPublic or collection.utilisateur.id == app.user.id %}
+					{{collectionMacros.card(collection)}}
+				{% endif %}
+			{% endfor %}
+
+
+		</ul>
+		<a href={{path('app_collections_page')}} class="bg-primary px-4 py-2 text-primary-foreground rounded m-auto">
+			Voir plus
+		</a>
 	</div>
 {% endblock %}
